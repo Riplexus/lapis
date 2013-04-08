@@ -1,0 +1,24 @@
+{
+  "name": "lAPIs",
+  "version": "0.0.1",
+  "description": "ligtweight API server",
+  "main": "lapis.js",
+  "dependencies": {
+    "eventemitter2": "~0.4.11",
+    "mocha": "~1.9.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "mocha --reporter list",
+    "start": "node server.js"
+  },
+  "repository": "",
+  "keywords": [
+    "lightweight",
+    "API",
+    "server"
+  ],
+  "author": "Thomas Lukacs",
+  "license": "BSD",
+  "readmeFilename": "README.md"
+}
