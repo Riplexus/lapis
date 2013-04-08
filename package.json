@@ -5,12 +5,13 @@
   "main": "lapis.js",
   "dependencies": {
     "eventemitter2": "~0.4.11",
-    "mocha": "~1.9.0"
+    "mocha": "~1.9.0",
+    "node.extend": "~1.0.2"
   },
   "devDependencies": {},
   "scripts": {
     "test": "mocha --reporter list",
-    "start": "node server.js"
+    "start": "node index.js"
   },
   "repository": "",
   "keywords": [
