@@ -61,13 +61,13 @@ describe('lapis', function() {
 
     describe('#on()', function() {
         it('should add listener', function() {
-            assert(Object.keys(s.listenerTree).length === 2);
+            var treelength = Object.keys(s.listenerTree).length;
 
             s.on('/path/on', function() {
                 return { data: true };
             });
 
-            assert(Object.keys(s.listenerTree).length === 3);
+            assert(Object.keys(s.listenerTree).length === treelength+1);
             assert('/path/on' in s.listenerTree);
         });
     });
