@@ -103,9 +103,8 @@ describe('lapis', function() {
                     json = JSON.parse(json);
 
                     assert('result' in json);
-                    assert(json.result.length === 2);
-                    assert('data' in json.result[0]);
-                    assert(json.result[0].data === true);
+                    assert('data' in json.result[1]);
+                    assert(json.result[1].data === true);
 
                     done();
                 });
@@ -113,6 +112,40 @@ describe('lapis', function() {
 
             req.on('error', function(err) {
                throw err;
+            });
+
+            req.end();
+        });
+
+        it('should return error code', function(done) {
+            s.on('/path/error', function() {
+                return 403;
+            });
+
+            var req = http.request({
+                port: 1337,
+                path: '/path/error/sub'
+            }, function(res) {
+                assert(res.statusCode === 403);
+                assert(isPathTriggered);
+
+                var json = '';
+                res.on('data', function(chunk) {
+                    json += chunk;
+                });
+                res.on('end', function() {
+                    json = JSON.parse(json);
+
+                    assert('meta' in json);
+                    assert('error' in json.meta);
+                    assert(json.meta.error === 'Forbidden');
+
+                    done();
+                });
+            });
+
+            req.on('error', function(err) {
+                throw err;
             });
 
             req.end();
