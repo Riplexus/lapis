@@ -61,14 +61,13 @@ describe('lapis', function() {
 
     describe('#on()', function() {
         it('should add listener', function() {
-            var treelength = Object.keys(s.listenerTree).length;
 
             s.on('/path/on', function() {
                 return { data: true };
             });
 
-            assert(Object.keys(s.listenerTree).length === treelength+1);
-            assert('/path/on' in s.listenerTree);
+            assert('path' in s.listenerTree);
+            assert('on' in s.listenerTree.path);
         });
     });
 
@@ -78,7 +77,7 @@ describe('lapis', function() {
                 done();
             });
 
-            s.emit('/path/emit', request);
+            s.emit('path/emit', request);
         });
     });
 
@@ -139,6 +138,40 @@ describe('lapis', function() {
                     assert('meta' in json);
                     assert('error' in json.meta);
                     assert(json.meta.error === 'Forbidden');
+
+                    done();
+                });
+            });
+
+            req.on('error', function(err) {
+                throw err;
+            });
+
+            req.end();
+        });
+
+        it('should extract variable', function(done) {
+            s.on('/path/var/:var', function() {
+                return {var: this.var.var};
+            });
+
+            var req = http.request({
+                port: 1337,
+                path: '/path/var/123'
+            }, function(res) {
+                assert(res.statusCode === 200);
+                assert(isPathTriggered);
+
+                var json = '';
+                res.on('data', function(chunk) {
+                    json += chunk;
+                });
+                res.on('end', function() {
+                    json = JSON.parse(json);
+
+                    assert('result' in json);
+                    assert('var' in json.result[1]);
+                    assert(json.result[1].var === '123');
 
                     done();
                 });
