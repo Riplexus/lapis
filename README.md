@@ -27,3 +27,15 @@ s.on('/path', function() {
     return 403;
 });
 ```
+
+```javascript
+s.on('/user/:id/email', function() {
+    return { userId: this.var.id };
+});
+```
+
+```javascript
+s.on('/user/*/email', function() {
+    return { data: true };
+});
+```
