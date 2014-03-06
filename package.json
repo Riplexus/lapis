@@ -1,5 +1,5 @@
 {
-  "name": "lAPIs",
+  "name": "lapis",
   "version": "0.2.1",
   "description": "ligtweight API server",
   "main": "lapis.js",
