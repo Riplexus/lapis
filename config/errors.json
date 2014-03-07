@@ -27,5 +27,6 @@
     "426": "Upgrade Required",
     "429": "Too Many Requests",
     "444": "No Response",
-    "451": "Unavailable For Legal Reasons"
+    "451": "Unavailable For Legal Reasons",
+    "500": "Internal Server Error"
 }
