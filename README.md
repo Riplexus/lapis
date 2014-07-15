@@ -1,7 +1,9 @@
 
 
 ```javascript
-var s = new Server();
+var s = new (require('lapis'))({
+    port: 1232
+});
 
 s.on('error', function(code, msg) {
     console.log(code, msg);
@@ -10,6 +12,9 @@ s.on('error', function(code, msg) {
 
 ```javascript
 s.on('/path/somewhere', function() {
+    // this.href
+    // this.param
+    // this.payload
     return { data: true };
 });
 ```
@@ -42,7 +47,7 @@ s.on('/user/*/email', function() {
 
 ```javascript
 s.on('GET!/path', function() {
-    return { data: true };
+    return { data: this.payload };
 });
 s.on('DELETE!/path', function() {
     return { data: this.payload };
