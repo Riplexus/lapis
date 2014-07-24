@@ -8,6 +8,7 @@ describe('lapis', function() {
     var request, s, isPathTriggered;
 
     request = {
+        calledEvents: [],
         res: {
             head: {},
             code: 200,
@@ -20,7 +21,7 @@ describe('lapis', function() {
                 this.data = JSON.parse(data);
             }
         },
-        result: {
+        data: {
             object: {data: true},
             fn: function() {},
             array: [1, 2, [3, 4]]
@@ -44,15 +45,15 @@ describe('lapis', function() {
             respond(request, 200, function() {
                 assert('Content-Type' in request.res.head);
                 assert(request.res.head['Content-Type'] === 'application/json');
-                assert('result' in request.res.data);
-                assert('object' in request.res.data.result);
-                assert(request.res.data.result.object.data === true);
-                assert('array' in request.res.data.result);
-                assert(request.res.data.result.array[0] === 1);
-                assert(request.res.data.result.array[1] === 2);
-                assert(request.res.data.result.array[2][0] === 3);
-                assert(request.res.data.result.array[2][1] === 4);
-                assert(!('fn' in request.res.data.result));
+                assert('data' in request.res.data);
+                assert('object' in request.res.data.data);
+                assert(request.res.data.data.object.data === true);
+                assert('array' in request.res.data.data);
+                assert(request.res.data.data.array[0] === 1);
+                assert(request.res.data.data.array[1] === 2);
+                assert(request.res.data.data.array[2][0] === 3);
+                assert(request.res.data.data.array[2][1] === 4);
+                assert(!('fn' in request.res.data.data));
 
                 done();
             });
@@ -101,9 +102,9 @@ describe('lapis', function() {
                 res.on('end', function() {
                     json = JSON.parse(json);
 
-                    assert('result' in json);
-                    assert('data' in json.result[1]);
-                    assert(json.result[1].data === true);
+                    assert('data' in json);
+                    assert('data' in json.data[1]);
+                    assert(json.data[1].data === true);
 
                     done();
                 });
@@ -152,7 +153,7 @@ describe('lapis', function() {
 
         it('should extract variable', function(done) {
             s.on('/path/var/:var', function() {
-                return {var: this.var.var};
+                return {var: this.param.var};
             });
 
             var req = http.request({
@@ -169,9 +170,9 @@ describe('lapis', function() {
                 res.on('end', function() {
                     json = JSON.parse(json);
 
-                    assert('result' in json);
-                    assert('var' in json.result[1]);
-                    assert(json.result[1].var === '123');
+                    assert('data' in json);
+                    assert('var' in json.data[1]);
+                    assert(json.data[1].var === '123');
 
                     done();
                 });
